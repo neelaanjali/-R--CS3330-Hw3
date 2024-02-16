@@ -30,20 +30,39 @@ public class StockManagerSingleton {
 	public boolean initializeStock() {
 	    try (BufferedReader br = new BufferedReader(new FileReader(inventoryFilePath))) {
 	        String line;
+	        
+	        String headerLine = br.readLine();
+	        
 	        while ((line = br.readLine()) != null) {
 	            String[] data = line.split(",");
-	            if (data.length == 4) {
-	                String title = data[0].trim();
-	                double price = Double.parseDouble(data[1].trim());
-	                int year = Integer.parseInt(data[2].trim());
-	                Genre genre = Genre.valueOf(data[3].trim());
-	                MediaProduct product = new MediaProduct(title, price, year, genre);
-	                inventory.add(product);
+	           
+	            String type = data[0];
+	            String title = data[1].trim();
+	            double price = Double.parseDouble(data[2].trim());
+	            int year = Integer.parseInt(data[3].trim());
+	            Genre genre = Genre.valueOf(data[4].trim());
+	               
+	            if(type == "CD") {
+	            	CDRecordProduct mediaProduct = new CDRecordProduct(title, price, year, genre);
+	            	inventory.add(mediaProduct);
+	            }else if(type == "Vinyl") {
+	            	VinylRecordProduct mediaProduct = new VinylRecordProduct(title, price, year, genre);
+	            	inventory.add(mediaProduct);
+	            }else if(type == "Tape") {
+	            	TapeRecordProduct mediaProduct = new TapeRecordProduct(title, price, year, genre);
+	            	inventory.add(mediaProduct);
+	            }  
 	            }
-	        }
 	        return true;
-	    } catch (IOException | NumberFormatException | IllegalArgumentException e) {
-	        return false;
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    	return false;
+	    } catch (NumberFormatException e) {
+	    	e.printStackTrace();
+	    	return false;
+	    } catch (IllegalArgumentException e) {
+	    	e.printStackTrace();
+	    	return false;
 	    }
 	}
 	
