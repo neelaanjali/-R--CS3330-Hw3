@@ -11,8 +11,10 @@ public class StockManagerSingleton {
 
 	private static StockManagerSingleton instance;
 	private final String inventoryFilePath = "inventory.csv";
+	private ArrayList<MediaProduct> inventory;
 	
-	private StockManagerSingleton() {
+	public StockManagerSingleton() {
+		this.inventory = new ArrayList<MediaProduct>();
 	}
 	
 	public static StockManagerSingleton getInstance() {
