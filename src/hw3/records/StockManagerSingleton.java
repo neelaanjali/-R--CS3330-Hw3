@@ -79,13 +79,22 @@ public class StockManagerSingleton {
 
 	
 	public boolean addItem(MediaProduct product) {
-	    return inventory.add(new MediaProduct(product));
+		if(product == null) return false;
+		inventory.add(product);
+	    return true;
 	} 
 
 	
 
 	public boolean removeItem(MediaProduct product) {
-	    return inventory.remove(product);
+		if(product == null) return false;
+		if(inventory.isEmpty()) return false;
+		if(inventory.contains(product))
+		{	
+			inventory.remove(product);
+			return true;
+		}
+	    return false;
 	}
 	
 }
