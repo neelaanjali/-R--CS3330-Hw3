@@ -97,4 +97,33 @@ public class StockManagerSingleton {
 	    return false;
 	}
 	
+	public ArrayList<VinylRecordProduct> getVinylRecordList(ArrayList<MediaProduct> productList){
+		ArrayList<VinylRecordProduct> vinylRecords = new ArrayList<VinylRecordProduct>();
+		for(MediaProduct product: productList) {
+			if (product instanceof VinylRecordProduct){
+				vinylRecords.add((VinylRecordProduct)product);
+			}
+		}
+		return vinylRecords;
+	}
+	
+	public ArrayList<CDRecordProduct> getCDRecordList(ArrayList<MediaProduct> productList){
+		ArrayList<CDRecordProduct> cdRecords = new ArrayList<CDRecordProduct>();
+		for(MediaProduct product: productList) {
+			if (product instanceof CDRecordProduct){
+				cdRecords.add((CDRecordProduct)product);
+			}
+		}
+		return cdRecords;
+	}
+	
+	public ArrayList<TapeRecordProduct> getTapeRecordList(ArrayList<MediaProduct> productList){
+		ArrayList<TapeRecordProduct> tapeRecords = new ArrayList<TapeRecordProduct>();
+		for(MediaProduct product: productList) {
+			if (product instanceof TapeRecordProduct){
+				tapeRecords.add((TapeRecordProduct)product);
+			}
+		}
+		return tapeRecords;
+	}
 }
