@@ -24,7 +24,7 @@ public class StockManagerSingleton {
         
         return instance;
 	}
-
+	
 	public boolean initializeStock() {
 	    try (BufferedReader br = new BufferedReader(new FileReader(inventoryFilePath))) {
 	        String line;
@@ -62,9 +62,45 @@ public class StockManagerSingleton {
 	} 
 
 	
-
 	public boolean removeItem(MediaProduct product) {
 	    return inventory.remove(product);
 	}
 	
+	//This method saves any updates to the data back into the original csv file.
+	public boolean saveStock() {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(inventoryFilePath));
+			
+			for (MediaProduct product : inventory) {
+				String line = String.format("%s, %.2f, %d, %s", product.getTitle(), product.getPrice(), product.getYear(), product.getGenre());
+				bw.write(line); 
+			}
+			bw.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	//This method creates and returns a new ArrayList of media products that is below the maxPrice. 
+	public ArrayList<MediaProduct> getMediaProductBelowPrice(int maxPrice) {
+		ArrayList<MediaProduct> lowPriceProducts = new ArrayList<>();
+		for (MediaProduct product : inventory) {
+			if (product.getPrice() < maxPrice) {
+				lowPriceProducts.add(product);
+			}
+		}
+		return lowPriceProducts;
+	}
+		
+	//This method prints the given media product list.
+	public void printListOfMediaProduct(ArrayList<MediaProduct> productList) {
+		for (MediaProduct product : productList) {
+			System.out.println(String.format("Title: %s, Price: %.2f, Year: %d, Genre: %s", product.getTitle(), product.getPrice(), product.getYear(), product.getGenre()));
+		}
+	}
+		
+
 }
