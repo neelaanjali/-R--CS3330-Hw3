@@ -102,7 +102,16 @@ public class StockManagerSingleton {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(inventoryFilePath));
 			
 			for (MediaProduct product : inventory) {
-				String line = String.format("%s, %.2f, %d, %s", product.getTitle(), product.getPrice(), product.getYear(), product.getGenre());
+				String line = "";
+				
+				if(product instanceof CDRecordProduct)
+					line = "CD, ";
+				if(product instanceof VinylRecordProduct)
+					line = "Vinyl, ";
+				if(product instanceof TapeRecordProduct)
+					line = "Tape, ";	
+							
+				line.concat(String.format("%s, %.2f, %d, %s", product.getTitle(), product.getPrice(), product.getYear(), product.getGenre()));
 				bw.write(line); 
 			}
 			bw.close();
