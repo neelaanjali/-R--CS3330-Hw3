@@ -170,4 +170,9 @@ public class StockManagerSingleton {
 		}
 		return tapeRecords;
 	}
+
+	public ArrayList<MediaProduct> getInventory() {
+		return inventory;
+	}
+	
 }
