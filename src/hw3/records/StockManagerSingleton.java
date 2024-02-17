@@ -11,9 +11,9 @@ public class StockManagerSingleton {
 
 	private static StockManagerSingleton instance;
 	private final String inventoryFilePath = "inventory.csv";
-	private ArrayList<MediaProduct> inventory;
+	public ArrayList<MediaProduct> inventory;
 	
-	private StockManagerSingleton() {
+	public StockManagerSingleton() {
 		this.inventory = new ArrayList<MediaProduct>();
 	}
 	
@@ -42,13 +42,13 @@ public class StockManagerSingleton {
 	            int year = Integer.parseInt(data[3].trim());
 	            Genre genre = Genre.valueOf(data[4].trim());
 	               
-	            if(type == "CD") {
+	            if(type.equals("CD")) {
 	            	CDRecordProduct mediaProduct = new CDRecordProduct(title, price, year, genre);
 	            	inventory.add(mediaProduct);
-	            }else if(type == "Vinyl") {
+	            }else if(type.equals("Vinyl")) {
 	            	VinylRecordProduct mediaProduct = new VinylRecordProduct(title, price, year, genre);
 	            	inventory.add(mediaProduct);
-	            }else if(type == "Tape") {
+	            }else if(type.equals("Type")) {
 	            	TapeRecordProduct mediaProduct = new TapeRecordProduct(title, price, year, genre);
 	            	inventory.add(mediaProduct);
 	            }  
