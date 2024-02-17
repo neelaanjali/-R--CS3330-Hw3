@@ -13,7 +13,7 @@ public class StockManagerSingleton {
 	private final String inventoryFilePath = "inventory.csv";
 	public ArrayList<MediaProduct> inventory;
 	
-	public StockManagerSingleton() {
+	private StockManagerSingleton() {
 		this.inventory = new ArrayList<MediaProduct>();
 	}
 	
@@ -111,7 +111,7 @@ public class StockManagerSingleton {
 				if(product instanceof TapeRecordProduct)
 					line = "Tape, ";	
 							
-				line.concat(String.format("%s, %.2f, %d, %s", product.getTitle(), product.getPrice(), product.getYear(), product.getGenre()));
+				line = line.concat(String.format("%s, %.2f, %d, %s\n", product.getTitle(), product.getPrice(), product.getYear(), product.getGenre()));
 				bw.write(line); 
 			}
 			bw.close();
