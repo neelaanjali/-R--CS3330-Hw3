@@ -11,8 +11,10 @@ public class StockManagerSingleton {
 
 	private static StockManagerSingleton instance;
 	private final String inventoryFilePath = "inventory.csv";
+	private ArrayList<MediaProduct> inventory;
 	
-	private StockManagerSingleton() {
+	public StockManagerSingleton() {
+		this.inventory = new ArrayList<MediaProduct>();
 	}
 	
 	public static StockManagerSingleton getInstance() {
@@ -28,20 +30,39 @@ public class StockManagerSingleton {
 	public boolean initializeStock() {
 	    try (BufferedReader br = new BufferedReader(new FileReader(inventoryFilePath))) {
 	        String line;
+	        
+	        String headerLine = br.readLine();
+	        
 	        while ((line = br.readLine()) != null) {
 	            String[] data = line.split(",");
-	            if (data.length == 4) {
-	                String title = data[0].trim();
-	                double price = Double.parseDouble(data[1].trim());
-	                int year = Integer.parseInt(data[2].trim());
-	                Genre genre = Genre.valueOf(data[3].trim());
-	                MediaProduct product = new MediaProduct(title, price, year, genre);
-	                inventory.add(product);
+	           
+	            String type = data[0];
+	            String title = data[1].trim();
+	            double price = Double.parseDouble(data[2].trim());
+	            int year = Integer.parseInt(data[3].trim());
+	            Genre genre = Genre.valueOf(data[4].trim());
+	               
+	            if(type == "CD") {
+	            	CDRecordProduct mediaProduct = new CDRecordProduct(title, price, year, genre);
+	            	inventory.add(mediaProduct);
+	            }else if(type == "Vinyl") {
+	            	VinylRecordProduct mediaProduct = new VinylRecordProduct(title, price, year, genre);
+	            	inventory.add(mediaProduct);
+	            }else if(type == "Tape") {
+	            	TapeRecordProduct mediaProduct = new TapeRecordProduct(title, price, year, genre);
+	            	inventory.add(mediaProduct);
+	            }  
 	            }
-	        }
 	        return true;
-	    } catch (IOException | NumberFormatException | IllegalArgumentException e) {
-	        return false;
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    	return false;
+	    } catch (NumberFormatException e) {
+	    	e.printStackTrace();
+	    	return false;
+	    } catch (IllegalArgumentException e) {
+	    	e.printStackTrace();
+	    	return false;
 	    }
 	}
 	
@@ -58,12 +79,21 @@ public class StockManagerSingleton {
 
 	
 	public boolean addItem(MediaProduct product) {
-	    return inventory.add(new MediaProduct(product));
+		if(product == null) return false;
+		inventory.add(product);
+	    return true;
 	} 
 
 	
 	public boolean removeItem(MediaProduct product) {
-	    return inventory.remove(product);
+		if(product == null) return false;
+		if(inventory.isEmpty()) return false;
+		if(inventory.contains(product))
+		{	
+			inventory.remove(product);
+			return true;
+		}
+	    return false;
 	}
 	
 	//This method saves any updates to the data back into the original csv file.
@@ -101,6 +131,34 @@ public class StockManagerSingleton {
 			System.out.println(String.format("Title: %s, Price: %.2f, Year: %d, Genre: %s", product.getTitle(), product.getPrice(), product.getYear(), product.getGenre()));
 		}
 	}
-		
-
+	
+	public ArrayList<VinylRecordProduct> getVinylRecordList(ArrayList<MediaProduct> productList){
+		ArrayList<VinylRecordProduct> vinylRecords = new ArrayList<VinylRecordProduct>();
+		for(MediaProduct product: productList) {
+			if (product instanceof VinylRecordProduct){
+				vinylRecords.add((VinylRecordProduct)product);
+			}
+		}
+		return vinylRecords;
+	}
+	
+	public ArrayList<CDRecordProduct> getCDRecordList(ArrayList<MediaProduct> productList){
+		ArrayList<CDRecordProduct> cdRecords = new ArrayList<CDRecordProduct>();
+		for(MediaProduct product: productList) {
+			if (product instanceof CDRecordProduct){
+				cdRecords.add((CDRecordProduct)product);
+			}
+		}
+		return cdRecords;
+	}
+	
+	public ArrayList<TapeRecordProduct> getTapeRecordList(ArrayList<MediaProduct> productList){
+		ArrayList<TapeRecordProduct> tapeRecords = new ArrayList<TapeRecordProduct>();
+		for(MediaProduct product: productList) {
+			if (product instanceof TapeRecordProduct){
+				tapeRecords.add((TapeRecordProduct)product);
+			}
+		}
+		return tapeRecords;
+	}
 }
